@@ -1,0 +1,38 @@
+name: bums_ar
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  arkit_plugin:
+  cupertino_icons: ^1.0.8
+  vector_math:
+  path_provider:
+  get_it:
+  provider:
+  flutter_map:
+  geolocator: ^10.1.0
+  dio:
+  flutter_map_marker_popup: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/obj/
+    - assets/images/
