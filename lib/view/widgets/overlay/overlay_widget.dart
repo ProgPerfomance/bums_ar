@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class OverlayWidget extends StatelessWidget {
   final UserStats stats;
-  const OverlayWidget({super.key, required this.stats});
+  final int rub;
+  const OverlayWidget({super.key, required this.stats, required this.rub});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class OverlayWidget extends StatelessWidget {
             SizedBox(height: 8),
             StatContainer(count: stats.food, color: Colors.orange, max: 100),
             SizedBox(height: 8,),
-            Text('1000 рублей')
+            Text('$rub рублей')
           ],
         ),
       ],

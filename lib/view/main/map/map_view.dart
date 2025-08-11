@@ -161,7 +161,7 @@ class _MapViewState extends State<MapView> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(top: 18.0, left: 18),
-              child: OverlayWidget(stats: vm.user.stats),
+              child: OverlayWidget(stats: vm.user.stats,rub: vm.user.rub,),
             ),
           ),
           Positioned(
@@ -174,14 +174,6 @@ class _MapViewState extends State<MapView> {
               ),
             ),
           ),
-          // Positioned(
-          //   bottom: 0,
-          //     child: SafeArea(
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(16.0),
-          //     child: OfflinePointMapCardWidget(),
-          //   ),
-          // )),
         ],
       ),
     );
@@ -202,13 +194,6 @@ class ShopMarker extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-        Scaffold.of(context).showBottomSheet((context)=> Container(
-          height: 300,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Colors.red
-          ),
-        ));
         Navigator.push(context, MaterialPageRoute(builder: (context)=> BottleShopView(shop: shop,)));
       },
       child: Container(

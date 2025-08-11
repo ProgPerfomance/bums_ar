@@ -6,6 +6,7 @@ class UserEntity {
   final List<InventoryItem> inventory;
   final LatLng position;
   final UserStats stats;
+  final int rub;
   final String id;
   UserEntity({
     required this.inventory,
@@ -13,6 +14,7 @@ class UserEntity {
     required this.position,
     required this.stats,
     required this.id,
+    required this.rub
   });
 
   UserEntity copyWith({
@@ -21,6 +23,7 @@ class UserEntity {
     LatLng? position,
     UserStats? stats,
     String? id,
+    int? rub,
   }) {
     return UserEntity(
       inventorySize: inventorySize ?? this.inventorySize,
@@ -28,11 +31,13 @@ class UserEntity {
       position: position ?? this.position,
       stats: stats ?? this.stats,
       id: id ?? this.id,
+      rub: rub ?? this.rub,
     );
   }
 
   factory UserEntity.fromApi(Map map) {
     return UserEntity(
+      rub: map['money']['rub'],
       inventory: [],
       inventorySize: 0,
       position: LatLng(

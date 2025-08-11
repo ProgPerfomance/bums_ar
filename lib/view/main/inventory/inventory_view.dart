@@ -21,18 +21,30 @@ class _InventoryViewState extends State<InventoryView> {
       body: SafeArea(child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4,crossAxisSpacing: 10,mainAxisSpacing: 10), itemBuilder: (context, index) {
-         final item = vm.items[index];
-          return Container(
-            decoration: BoxDecoration(
-              color: getBackgroundColor(item.item.rarity),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.network(item.item.imageUrl),
-            ),
-          );
-        }, itemCount: vm.items.length,),
+
+         if(vm.items.length > index) {
+           final item = vm.items[index];
+           return Container(
+             decoration: BoxDecoration(
+                 color: getBackgroundColor(item.item.rarity),
+                 borderRadius: BorderRadius.circular(12),
+                 border: Border.all(color: Colors.white.withAlpha(30), width: 3)
+             ),
+             child: Padding(
+               padding: const EdgeInsets.all(8.0),
+               child: Image.network(item.item.imageUrl),
+             ),
+           );
+         }
+         else {
+           return Container(
+             decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(12),
+                 border: Border.all(color: Colors.white.withAlpha(30), width: 3)
+             ),
+           );
+         }
+        }, itemCount: 54,),
       )),
     );
   }
