@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bums_ar/domain/entities/shop_entity.dart';
 import 'package:bums_ar/view/main/shop/bottle_shop/bottle_shop_view.dart';
+import 'package:bums_ar/view/main/shop/convenience_store/convenience_store_view.dart';
 import 'package:bums_ar/view/widgets/main_buttons.dart';
 import 'package:bums_ar/view/widgets/offline_point_map_card_widget.dart';
 import 'package:bums_ar/view/widgets/overlay/overlay_widget.dart';
@@ -194,7 +195,13 @@ class ShopMarker extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> BottleShopView(shop: shop,)));
+        if(shop.type == "trash_sell") {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => BottleShopView(shop: shop,)));
+        }
+        else if (shop.type == "base_shop") {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> ConvenienceStoreView(shop: shop)));
+        }
       },
       child: Container(
         decoration: BoxDecoration(

@@ -47,35 +47,7 @@ class _BottleShopViewState extends State<BottleShopView> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          const ShopExitButton(),
-                          const Spacer(),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: const [
-                              Text(
-                                "1000",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              Text(
-                                "Рублей",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 12),
-                          const CircleAvatar(radius: 30),
-                        ],
-                      ),
+                      ShopTopBar(),
                       const SizedBox(height: 72),
                       Expanded(child: ListView.separated(itemBuilder: (context,index) {
                         return RecyclingItemCard(shopItem: vm.items[index],userItems: vm.userItems,shop: widget.shop,);
@@ -330,3 +302,41 @@ class _QtyChip extends StatelessWidget {
 //     },
 //   ),
 // ),
+
+
+class ShopTopBar extends StatelessWidget {
+  const ShopTopBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const ShopExitButton(),
+        const Spacer(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: const [
+            Text(
+              "1000",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              "Рублей",
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(width: 12),
+        const CircleAvatar(radius: 30),
+      ],
+    );
+  }
+}
