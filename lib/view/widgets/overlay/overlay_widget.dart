@@ -1,4 +1,5 @@
 import 'package:bums_ar/domain/entities/user_entity.dart';
+import 'package:bums_ar/view/main/profile/user_profile/user_profile_view.dart';
 import 'package:flutter/material.dart';
 
 class OverlayWidget extends StatelessWidget {
@@ -11,7 +12,11 @@ class OverlayWidget extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(backgroundColor: Colors.grey, radius: 32),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> UserProfileView()));
+          },
+            child: CircleAvatar(backgroundColor: Colors.grey, radius: 32)),
         SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
