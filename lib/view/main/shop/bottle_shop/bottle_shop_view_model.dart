@@ -34,7 +34,7 @@ class BottleShopViewModel extends ChangeNotifier {
   Widget? sellSheet;
 
   setSellSheet (ShopItemEntity shopItem, ShopEntity shop, int itemCount) {
-    sellSheet = SellAlert(shopItem: shopItem, shop: shop, maxCount: itemCount);
+    sellSheet = SellAlert(shopItem: shopItem, shop: shop, maxCount: itemCount, vmCallback: initShopData,);
     notifyListeners();
   }
 

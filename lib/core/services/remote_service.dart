@@ -68,10 +68,12 @@ class RemoteService {
     String itemId,
     int itemCount,
     String shopId,
+      int itemPrice,
+      String userId,
   ) async {
-    final response = await dio.get(
-      "/shops/items/sell",
-      data: {"item_id": itemId, "item_count": itemCount, "shop_id": shopId},
+    final response = await dio.post(
+      "/shops/item/sell",
+      data: {"item_id": itemId, "item_count": itemCount, "shop_id": shopId, "user_id": userId, "item_price": itemPrice},
     );
     return response;
   }

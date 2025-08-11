@@ -7,6 +7,7 @@ import '../../../../domain/entities/shop_entity.dart';
 import '../../../../domain/entities/shop_item_entity.dart';
 
 class SellAlert extends StatelessWidget {
+  final Function(String shopId) vmCallback;
   final ShopItemEntity shopItem;
   final ShopEntity shop;
   final int maxCount;
@@ -15,6 +16,7 @@ class SellAlert extends StatelessWidget {
     required this.shopItem,
     required this.shop,
     required this.maxCount,
+    required this.vmCallback,
   });
 
   @override
@@ -112,20 +114,26 @@ class SellAlert extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Container(
-                  height: 52,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.white.withAlpha(30),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Продать",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                GestureDetector(
+                  onTap: () async{
+                   await vm.sellItems(shopItem.itemId, shop.id, shopItem.sellPrice);
+                   await vmCallback(shop.id);
+                  },
+                  child: Container(
+                    height: 52,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white.withAlpha(30),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Продать",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

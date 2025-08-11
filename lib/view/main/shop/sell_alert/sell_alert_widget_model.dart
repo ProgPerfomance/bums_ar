@@ -1,7 +1,13 @@
+import 'package:bums_ar/data/repository/shop_repository.dart';
+import 'package:bums_ar/data/repository/user_repository.dart';
+import 'package:bums_ar/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class SellAlertWidgetModel extends ChangeNotifier {
   int sellCount = 0;
+
+  final ShopRepository _shopRepository = getIt.get<ShopRepository>();
+  final UserRepository _userRepository = getIt.get<UserRepository>();
 
   void addAll(int totalCount) {
     sellCount = totalCount;
@@ -29,5 +35,15 @@ class SellAlertWidgetModel extends ChangeNotifier {
   void removeAll() {
     sellCount = 0;
     notifyListeners();
+  }
+
+  Future<void> sellItems(String itemId, String shopId, int itemPrice) async {
+    await _shopRepository.sellItemInShop(
+      itemId,
+      sellCount,
+      shopId,
+      _userRepository.activeUser.id,
+      itemPrice,
+    );
   }
 }

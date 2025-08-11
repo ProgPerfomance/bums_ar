@@ -22,4 +22,10 @@ class ShopRepository {
     return data.map((v)=> ShopItemEntity.fromApi(v)).toList();
   }
 
+  Future<void> sellItemInShop (String itemId, int itemCount, String shopId, String userId, int itemPrice) async {
+
+    final response = await RemoteService.sellItemInShop(itemId, itemCount, shopId, itemPrice, userId);
+
+  }
+
 }
