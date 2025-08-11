@@ -77,4 +77,15 @@ class RemoteService {
     );
     return response;
   }
+
+  static Future<Response> buyItemsInShop (int itemCount, String userId, String shopItemId, String shopId) async {
+    final response = await dio.post("/shops/item/buy", data: {
+      "item_count": itemCount,
+      "shop_id": shopId,
+      "user_id": userId,
+      "shop_item_id": shopItemId,
+    });
+    return response;
+  }
+
 }

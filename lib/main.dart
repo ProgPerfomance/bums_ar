@@ -5,6 +5,7 @@ import 'package:bums_ar/view/main/inventory/inventory_viewmodel.dart';
 import 'package:bums_ar/view/main/map/map_view.dart';
 import 'package:bums_ar/view/main/map/map_view_model.dart';
 import 'package:bums_ar/view/main/shop/bottle_shop/bottle_shop_view_model.dart';
+import 'package:bums_ar/view/main/shop/buy_item/buy_item_view_model.dart';
 import 'package:bums_ar/view/main/shop/convenience_store/convenience_store_view.dart';
 import 'package:bums_ar/view/main/shop/convenience_store/convenience_store_view_model.dart';
 import 'package:bums_ar/view/main/shop/sell_alert/sell_alert_widget_model.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=> BottleShopViewModel()),
         ChangeNotifierProvider(create: (context)=> SellAlertWidgetModel()),
         ChangeNotifierProvider(create: (context)=> ConvenienceStoreViewModel()),
+        ChangeNotifierProvider(create: (context)=> BuyItemViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

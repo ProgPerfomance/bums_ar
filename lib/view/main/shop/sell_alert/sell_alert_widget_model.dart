@@ -45,5 +45,8 @@ class SellAlertWidgetModel extends ChangeNotifier {
       _userRepository.activeUser.id,
       itemPrice,
     );
+    sellCount = 0;
+    _userRepository.getUserById();
+    notifyListeners();
   }
 }

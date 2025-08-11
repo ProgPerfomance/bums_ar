@@ -159,15 +159,17 @@ class SellAlertButton extends StatelessWidget {
       onTap: () => onTap(), // тут вызов, а не ссылка
       child: Container(
         height: 42,
-        width: 42,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Colors.white.withAlpha(10),
         ),
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 16, color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 16, color: Colors.white),
+            ),
           ),
         ),
       ),

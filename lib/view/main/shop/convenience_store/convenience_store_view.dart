@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:bums_ar/domain/entities/shop_entity.dart';
 import 'package:bums_ar/view/main/shop/bottle_shop/bottle_shop_view.dart'; // для ShopTopBar
+import 'package:bums_ar/view/main/shop/buy_item/buy_item_view.dart';
 import 'package:bums_ar/view/main/shop/convenience_store/convenience_store_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -175,7 +176,7 @@ class _ConvenienceStoreViewState extends State<ConvenienceStoreView> {
                                       elevation: 0,
                                     ),
                                     onPressed: () {
-                                      // TODO: открыть карточку товара / добавление в корзину
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> BuyItemView(shopItem: vm.items[index])));
                                     },
                                     child: const Text(
                                       'Купить',

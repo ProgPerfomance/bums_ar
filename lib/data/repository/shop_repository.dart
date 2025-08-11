@@ -28,4 +28,8 @@ class ShopRepository {
 
   }
 
+  Future<void> buyItemInShop (String shopItemId, int itemCount, String userId, String shopId) async {
+    final response = await RemoteService.buyItemsInShop(itemCount, userId, shopItemId, shopId);
+  }
+
 }
