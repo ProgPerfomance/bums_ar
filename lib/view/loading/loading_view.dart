@@ -1,3 +1,4 @@
+import 'package:bums_ar/view/main/auth/login/login_view.dart';
 import 'package:bums_ar/view/main/map/map_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,16 @@ class LoadingView extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> MapView()), (v)=>false);
+            if(snapshot.data == true) {
+              Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (context) => MapView()), (
+                  v) => false);
+            }
+            else {
+              Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (context) => LoginView()), (
+                  v) => false);
+            }
           });
           return const SizedBox.shrink();
         }

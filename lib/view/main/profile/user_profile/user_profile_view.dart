@@ -12,32 +12,55 @@ class UserProfileView extends StatelessWidget {
     final vm = Provider.of<UserProfileViewModel>(context);
     return Scaffold(
       backgroundColor: AppColors.mainBlue,
-      body: SafeArea(child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ShopExitButton(),
-            SizedBox(height: 300,),
-            GestureDetector(
-              onTap: () async{
-                await vm.logout();
-              },
-              child: Container(
-                height: 54,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white.withAlpha(30),
-                ),
-                child: Center(
-                  child: Text("Выйти",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 16,color: Colors.white),),
-                ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShopExitButton(),
+              SizedBox(height: 300),
+              BaseLongButton(
+                onTap: () async {
+                  await vm.logout();
+                },
+                title: "Выйти",
               ),
-            )
-          ],
+            ],
+          ),
         ),
-      )),
+      ),
+    );
+  }
+}
+
+class BaseLongButton extends StatelessWidget {
+  final String title;
+  final void Function() onTap;
+  const BaseLongButton({super.key, required this.onTap, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {},
+      child: Container(
+        height: 54,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white.withAlpha(30),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

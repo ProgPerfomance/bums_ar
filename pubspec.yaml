@@ -22,6 +22,7 @@ dependencies:
   geolocator: ^10.1.0
   dio:
   flutter_map_marker_popup: ^6.0.0
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:

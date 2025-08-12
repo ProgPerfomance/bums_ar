@@ -10,10 +10,10 @@ class UserRepository {
   }
 
   UserEntity get activeUser => _activeUser!;
-  Future<void> getUserById() async {
+  Future<void> getUserById(String userId) async {
     try {
       final response = await RemoteService.getUserById(
-        "68961bff52999dac9971a7fe",
+       userId,
       );
 
       _activeUser = UserEntity.fromApi(response.data);
@@ -31,7 +31,7 @@ class UserRepository {
   }
 
   Future<List<InventoryItem>> getUserInventory () async {
-    
+
     final response = await RemoteService.getUserInventory(activeUser.id);
 
     List data = response.data;
