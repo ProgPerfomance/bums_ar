@@ -1,6 +1,7 @@
 import 'package:bums_ar/core/services/remote_service.dart';
 import 'package:bums_ar/domain/entities/user_entity.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   UserEntity? _activeUser;
@@ -12,9 +13,7 @@ class UserRepository {
   UserEntity get activeUser => _activeUser!;
   Future<void> getUserById(String userId) async {
     try {
-      final response = await RemoteService.getUserById(
-       userId,
-      );
+      final response = await RemoteService.getUserById(userId);
 
       _activeUser = UserEntity.fromApi(response.data);
     } catch (e) {
@@ -30,14 +29,26 @@ class UserRepository {
     );
   }
 
-  Future<List<InventoryItem>> getUserInventory () async {
-
+  Future<List<InventoryItem>> getUserInventory() async {
     final response = await RemoteService.getUserInventory(activeUser.id);
 
     List data = response.data;
 
-    return data.map((v)=> InventoryItem.fromApi(v)).toList();
+    return data.map((v) => InventoryItem.fromApi(v)).toList();
+  }
 
+  Future<bool> loginUser(String email, String password) async {
+
+    final response = await RemoteService.loginUser(email, password);
+    if(response.data['e'] != null) {
+      return false;
+    }
+    else {
+      _activeUser = UserEntity.fromApi(response.data);
+    }
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("userId", response.data['_id']);
+    return true;
   }
 
 }

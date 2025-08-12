@@ -156,7 +156,7 @@ class SellAlertButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(), // тут вызов, а не ссылка
+      onTap: () => onTap(),
       child: Container(
         height: 42,
         decoration: BoxDecoration(

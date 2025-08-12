@@ -1,5 +1,6 @@
 import 'package:bums_ar/core/colors.dart';
 import 'package:bums_ar/view/main/auth/login/login_view_model.dart';
+import 'package:bums_ar/view/main/map/map_view.dart';
 import 'package:bums_ar/view/main/profile/user_profile/user_profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,16 +23,48 @@ class LoginView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 300,),
-            TextField(controller: _emailController,),
+            AppTextField(controller: _emailController,hintText: "Email",),
             SizedBox(height: 18,),
-            TextField(controller: _passwordController,),
+            AppTextField(controller: _passwordController,hintText: "Пароль",),
             SizedBox(height: 24,),
             BaseLongButton(onTap: () async {
-              await vm.login();
+             bool success = await vm.login(_emailController.text,_passwordController.text);
+             if(success == true) {
+               Navigator.push(context, MaterialPageRoute(builder: (context)=> MapView()));
+             }
+             else {
+               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Неверный логин или пароль")));
+             }
             }, title: "Войти"),
           ],
         ),
       )),
+    );
+  }
+}
+
+
+class AppTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String hintText;
+  const AppTextField({super.key, required this.controller, required this.hintText});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white.withAlpha(128)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white),
+        ),
+      ),
     );
   }
 }

@@ -42,7 +42,7 @@ class BaseLongButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {},
+      onTap: onTap,
       child: Container(
         height: 54,
         width: MediaQuery.of(context).size.width,
