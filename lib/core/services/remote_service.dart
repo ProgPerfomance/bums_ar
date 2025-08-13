@@ -105,4 +105,20 @@ class RemoteService {
     return response;
   }
 
+  static Future<Response> healUser (String userId, int heal) async {
+    final response = await dio.put("/users/heal", data: {
+      "user_id": userId,
+      "heal": heal,
+    });
+    return response;
+  }
+
+  static Future<Response> damageUser (String userId, int heal) async {
+    final response = await dio.put("/users/damage", data: {
+      "user_id": userId,
+      "damage": heal,
+    });
+    return response;
+  }
+
 }

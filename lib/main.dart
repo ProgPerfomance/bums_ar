@@ -1,3 +1,4 @@
+import 'package:bums_ar/view/main/battle/battle_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bums_ar/service_locator.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BuyItemViewModel()),
         ChangeNotifierProvider(create: (_) => UserProfileViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider(create: (_) => BattleViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

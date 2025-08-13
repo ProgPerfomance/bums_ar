@@ -1,6 +1,6 @@
 // где-то при старте приложения
 import 'package:bums_ar/data/repository/items_repository.dart';
-import 'package:bums_ar/data/repository/npc_controller.dart';
+import 'package:bums_ar/data/repository/npc_repository.dart';
 import 'package:bums_ar/data/repository/shop_repository.dart';
 import 'package:bums_ar/data/repository/user_repository.dart';
 import 'package:get_it/get_it.dart';
@@ -12,5 +12,5 @@ void setupLocator() {
   getIt.registerSingleton(UserRepository());
   getIt.registerSingleton(ItemsRepository());
   getIt.registerSingleton(ShopRepository());
-  getIt.registerSingleton(NpcController());
+  getIt.registerSingleton(NpcRepository());
 }

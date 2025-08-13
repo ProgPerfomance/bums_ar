@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bums_ar/domain/entities/shop_entity.dart';
+import 'package:bums_ar/view/main/battle/battle_view.dart';
 import 'package:bums_ar/view/main/shop/bottle_shop/bottle_shop_view.dart';
 import 'package:bums_ar/view/main/shop/convenience_store/convenience_store_view.dart';
 import 'package:bums_ar/view/widgets/main_buttons.dart';
@@ -126,6 +127,23 @@ class _MapViewState extends State<MapView> {
       );
     }).toList();
 
+    final npc =
+    vm.npc.map((loc) {
+      final coords = loc;
+     // final canPick = vm.canPickup(loc.id);
+
+      return Marker(
+        width: 38,
+        height: 38,
+        point: LatLng(coords.position.latitude, coords.position.longitude),
+        child: GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> BattleView()));
+          },
+            child: Icon(Icons.password)),
+      );
+    }).toList();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -149,7 +167,7 @@ class _MapViewState extends State<MapView> {
                 ),
                 MarkerLayer(
                   markers: [
-                    ...markers, ...shops,
+                    ...markers, ...shops, ...npc,
                     Marker(
                       point: vm.userPosition,
                       child: const Icon(Icons.person),

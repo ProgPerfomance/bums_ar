@@ -1,4 +1,7 @@
+import 'package:latlong2/latlong.dart';
+
 class NpcEntity {
+  LatLng position;
   String name;
   int level;
   int baseHeal;
@@ -8,6 +11,7 @@ class NpcEntity {
     required this.level,
     required this.baseHeal,
     required this.reward,
+    required this.position,
   });
 
   factory NpcEntity.fromApi(Map map) {
@@ -15,7 +19,8 @@ class NpcEntity {
       name: map['name'],
       level: map['level'],
       baseHeal: map['base_heal'],
-      reward: RewardEntity.fromApi(map['reward']),
+      reward: RewardEntity.fromApi(map['kill_reward']),
+      position: LatLng(map['location']['coordinates'][1], map['location']['coordinates'][0]),
     );
   }
 }

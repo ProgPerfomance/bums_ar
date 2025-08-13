@@ -51,6 +51,16 @@ class UserRepository {
     return true;
   }
 
+  Future<void> healUser(int heal) async {
+    final response = await RemoteService.healUser(activeUser.id, heal);
+    _activeUser = _activeUser?.copyWith(stats: _activeUser?.stats.copyWith(heal: response.data['new_heal'] is int ? response.data['new_heal'].toDouble() :  response.data['new_heal']));
+  }
+
+  Future<void> damageUser(int damage) async {
+    final response = await RemoteService.damageUser(activeUser.id, damage);
+    _activeUser = _activeUser?.copyWith(stats: _activeUser?.stats.copyWith(heal: response.data['new_heal'] is int ? response.data['new_heal'].toDouble() :  response.data['new_heal']));
+  }
+
 }
 
 void pickItem(String id) {}

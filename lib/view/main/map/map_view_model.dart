@@ -1,5 +1,7 @@
 import 'package:bums_ar/data/repository/items_repository.dart';
+import 'package:bums_ar/data/repository/npc_repository.dart';
 import 'package:bums_ar/data/repository/shop_repository.dart';
+import 'package:bums_ar/domain/entities/npc_entity.dart';
 import 'package:bums_ar/domain/entities/shop_entity.dart';
 import 'package:bums_ar/domain/entities/user_entity.dart';
 import 'package:bums_ar/service_locator.dart';
@@ -19,10 +21,12 @@ class MapViewModel extends ChangeNotifier {
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final ItemsRepository _itemsRepository = getIt.get<ItemsRepository>();
   final ShopRepository _shopRepository = getIt.get<ShopRepository>();
+  final NpcRepository _npcRepository = getIt.get<NpcRepository>();
 
   final Distance _geo = const Distance();
   List<MapItemEntity> items = [];
   List<ShopEntity> shops = [];
+  List<NpcEntity> npc = [];
 
   final Map<String, bool> _canPickup = {};
   bool canPickup(String itemId) => _canPickup[itemId] ?? false;
@@ -32,13 +36,14 @@ class MapViewModel extends ChangeNotifier {
 
   /// Получить предметы и пересчитать близость
   Future<void> getMarkers() async {
-    shops = await _shopRepository.getOfflineShops(
-      _userRepository.activeUser.position.latitude,
-      _userRepository.activeUser.position.longitude,
-    );
-    items = await _itemsRepository.getMapItems(
-      _userRepository.activeUser.position.latitude,
-      _userRepository.activeUser.position.longitude,
+    final double lat = _userRepository.activeUser.position.latitude;
+    final double long = _userRepository.activeUser.position.longitude;
+    shops = await _shopRepository.getOfflineShops(lat, long);
+    items = await _itemsRepository.getMapItems(lat, long);
+    npc = await _npcRepository.getMapNpc(
+      _userRepository.activeUser.id,
+      lat,
+      long,
     );
     _recalcProximity();
   }

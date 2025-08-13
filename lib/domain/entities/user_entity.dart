@@ -14,7 +14,7 @@ class UserEntity {
     required this.position,
     required this.stats,
     required this.id,
-    required this.rub
+    required this.rub,
   });
 
   UserEntity copyWith({
@@ -72,6 +72,22 @@ class UserStats {
       heal: map['heal'].toDouble(),
       level: map['level'],
       water: map['water'].toDouble(),
+    );
+  }
+
+  UserStats copyWith({
+    double? heal,
+    double? food,
+    double? water,
+    int? level,
+    int? exp,
+  }) {
+    return UserStats(
+      exp: exp ?? this.exp,
+      food: food ?? this.food,
+      heal: heal ?? this.heal,
+      level: level ?? this.level,
+      water: water ?? this.water,
     );
   }
 }
