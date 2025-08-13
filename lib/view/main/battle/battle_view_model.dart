@@ -16,7 +16,11 @@ class BattleViewModel extends ChangeNotifier {
   int get playerHealt => _userRepository.activeUser.stats.heal.toInt();
   int npcHealt = 100;
 
-  // ======== ВЫСТРЕЛ ЧЕРЕЗ OVERLAY (напрямую из VM) ========
+  bool npcUsingHeal = false;
+  bool userUsingHeal = false;
+
+
+
   void _spawnTracer({required bool fromLeft, required bool miss}) {
     final overlay = navKey.currentState?.overlay;
     if (overlay == null) return;

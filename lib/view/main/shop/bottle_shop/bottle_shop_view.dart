@@ -1,4 +1,3 @@
-import 'package:bums_ar/core/colors.dart';
 import 'package:bums_ar/domain/entities/shop_entity.dart';
 import 'package:bums_ar/domain/entities/shop_item_entity.dart';
 import 'package:bums_ar/domain/entities/user_entity.dart';
@@ -47,7 +46,7 @@ class _BottleShopViewState extends State<BottleShopView> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      ShopTopBar(),
+                      ShopTopBar(user: vm.user),
                       const SizedBox(height: 72),
                       Expanded(child: ListView.separated(itemBuilder: (context,index) {
                         return RecyclingItemCard(shopItem: vm.items[index],userItems: vm.userItems,shop: widget.shop,);
@@ -305,7 +304,8 @@ class _QtyChip extends StatelessWidget {
 
 
 class ShopTopBar extends StatelessWidget {
-  const ShopTopBar({super.key});
+  final UserEntity user;
+  const ShopTopBar({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -315,9 +315,9 @@ class ShopTopBar extends StatelessWidget {
         const Spacer(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          children: const [
+          children:  [
             Text(
-              "1000",
+              "${user.rub}",
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 color: Colors.white,

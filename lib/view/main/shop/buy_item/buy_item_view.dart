@@ -21,7 +21,7 @@ class BuyItemView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ShopTopBar(),
+              ShopTopBar(user: vm.user,),
               SizedBox(height: 72),
               Center(
                 child: Container(

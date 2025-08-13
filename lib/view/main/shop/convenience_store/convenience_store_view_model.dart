@@ -12,7 +12,7 @@ class ConvenienceStoreViewModel extends ChangeNotifier {
   final UserRepository _userRepository = getIt.get<UserRepository>();
   final ItemsRepository _itemsRepository = getIt.get<ItemsRepository>();
   final ShopRepository _shopRepository = getIt.get<ShopRepository>();
-
+  UserEntity get user => _userRepository.activeUser;
   List<ShopItemEntity> items = [];
   List<InventoryItem> userItems = [];
   bool isLoading = false;

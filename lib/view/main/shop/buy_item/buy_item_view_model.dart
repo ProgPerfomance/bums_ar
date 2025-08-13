@@ -1,4 +1,5 @@
 import 'package:bums_ar/core/services/app_money_notificaions.dart';
+import 'package:bums_ar/domain/entities/user_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../data/repository/shop_repository.dart';
@@ -9,6 +10,8 @@ class BuyItemViewModel extends ChangeNotifier {
 
   final ShopRepository _shopRepository = getIt.get<ShopRepository>();
   final UserRepository _userRepository = getIt.get<UserRepository>();
+
+  UserEntity get user => _userRepository.activeUser;
 
   int buyCount = 0;
 

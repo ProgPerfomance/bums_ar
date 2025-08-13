@@ -4,7 +4,8 @@ class BattleButton extends StatelessWidget {
   final double width;
   final double height;
   final VoidCallback onTap;
-  const BattleButton({super.key, this.width = 48, this.height = 48, required this.onTap});
+  final Widget? child;
+  const BattleButton({super.key, this.width = 48, this.height = 48, required this.onTap, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class BattleButton extends StatelessWidget {
           color: Colors.white.withAlpha(80),
           border: Border.all(color: Colors.white.withAlpha(183)),
         ),
+        child: Center(child: child),
       ),
     );
   }

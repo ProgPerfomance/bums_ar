@@ -7,6 +7,9 @@ class AppImages {
   static const String personSeat = "$_path/person_seat.png";
   static const String battleBg = "$_path/battle_bg.png";
   static const String scarL = "$_path/scar_l.png";
+  static const String iconState = "$_path/icon_stay.png";
+  static const String iconSeat = "$_path/icon_seat.png";
+  static const String medicalKit = "$_path/medical_kit.png";
   static const String personStay = "$_path/person_state.png";
   static const String baseHuman = "$_path/base_human.png";
   static const String barricadeLeft = "$_path/barricade_left.png";

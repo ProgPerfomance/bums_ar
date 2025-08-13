@@ -22,8 +22,10 @@ class _ConvenienceStoreViewState extends State<ConvenienceStoreView> {
   @override
   void initState() {
     super.initState();
-    Provider.of<ConvenienceStoreViewModel>(context, listen: false)
-        .initShopData(widget.shop.id);
+    Provider.of<ConvenienceStoreViewModel>(
+      context,
+      listen: false,
+    ).initShopData(widget.shop.id);
   }
 
   @override
@@ -35,21 +37,26 @@ class _ConvenienceStoreViewState extends State<ConvenienceStoreView> {
         children: [
           // BG image
           Positioned.fill(
-            child: widget.shop.backgroundImageUrl != null &&
-                widget.shop.backgroundImageUrl!.trim().isNotEmpty
-                ? Image.network(
-              widget.shop.backgroundImageUrl!,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => const ColoredBox(color: Colors.black),
-            )
-                : const ColoredBox(color: Colors.black),
+            child:
+                widget.shop.backgroundImageUrl != null &&
+                        widget.shop.backgroundImageUrl!.trim().isNotEmpty
+                    ? Image.network(
+                      widget.shop.backgroundImageUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder:
+                          (_, __, ___) => const ColoredBox(color: Colors.black),
+                    )
+                    : const ColoredBox(color: Colors.black),
           ),
           // Blue gradient + vignette
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [primaryDark.withOpacity(0.85), Colors.black.withOpacity(0.6)],
+                  colors: [
+                    primaryDark.withOpacity(0.85),
+                    Colors.black.withOpacity(0.6),
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -66,7 +73,7 @@ class _ConvenienceStoreViewState extends State<ConvenienceStoreView> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  const ShopTopBar(),
+                  ShopTopBar(user: vm.user),
                   const SizedBox(height: 24),
                   // Header chip
                   Align(
@@ -75,7 +82,11 @@ class _ConvenienceStoreViewState extends State<ConvenienceStoreView> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.local_grocery_store, size: 16, color: Colors.white),
+                          const Icon(
+                            Icons.local_grocery_store,
+                            size: 16,
+                            color: Colors.white,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             'У дома',
@@ -90,106 +101,146 @@ class _ConvenienceStoreViewState extends State<ConvenienceStoreView> {
                   ),
                   const SizedBox(height: 16),
                   Expanded(
-                    child: vm.isLoading
-                        ? _SkeletonGrid()
-                        : GridView.builder(
-                      padding: EdgeInsets.zero,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 3 / 3.9,
-                      ),
-                      itemCount: vm.items.length,
-                      itemBuilder: (context, index) {
-                        final item = vm.items[index];
-                        return _GlassCard(
-                          primary: primary,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // Image
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Stack(
-                                    fit: StackFit.expand,
+                    child:
+                        vm.isLoading
+                            ? _SkeletonGrid()
+                            : GridView.builder(
+                              padding: EdgeInsets.zero,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
+                                    childAspectRatio: 3 / 3.9,
+                                  ),
+                              itemCount: vm.items.length,
+                              itemBuilder: (context, index) {
+                                final item = vm.items[index];
+                                return _GlassCard(
+                                  primary: primary,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
-                                      AnimatedOpacity(
-                                        opacity: 1,
-                                        duration: const Duration(milliseconds: 300),
-                                        child: Image.network(
-                                          item.item.imageUrl,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (_, __, ___) => const Center(
-                                            child: Icon(Icons.image_not_supported, color: Colors.white54),
+                                      // Image
+                                      Expanded(
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
                                           ),
-                                          loadingBuilder: (c, w, progress) {
-                                            if (progress == null) return w;
-                                            return const _ImageSkeleton();
-                                          },
+                                          child: Stack(
+                                            fit: StackFit.expand,
+                                            children: [
+                                              AnimatedOpacity(
+                                                opacity: 1,
+                                                duration: const Duration(
+                                                  milliseconds: 300,
+                                                ),
+                                                child: Image.network(
+                                                  item.item.imageUrl,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder:
+                                                      (
+                                                        _,
+                                                        __,
+                                                        ___,
+                                                      ) => const Center(
+                                                        child: Icon(
+                                                          Icons
+                                                              .image_not_supported,
+                                                          color: Colors.white54,
+                                                        ),
+                                                      ),
+                                                  loadingBuilder: (
+                                                    c,
+                                                    w,
+                                                    progress,
+                                                  ) {
+                                                    if (progress == null)
+                                                      return w;
+                                                    return const _ImageSkeleton();
+                                                  },
+                                                ),
+                                              ),
+                                              // Price pill
+                                              Positioned(
+                                                right: 8,
+                                                top: 8,
+                                                child: _PricePill(
+                                                  text: '${item.basePrice} ₽',
+                                                  color: primary,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                      // Price pill
-                                      Positioned(
-                                        right: 8,
-                                        top: 8,
-                                        child: _PricePill(
-                                          text: '${item.basePrice} ₽',
-                                          color: primary,
+                                      const SizedBox(height: 10),
+                                      // Name
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                        child: Text(
+                                          item.item.name,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            height: 1.2,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      // CTA
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                          8,
+                                          0,
+                                          8,
+                                          2,
+                                        ),
+                                        child: SizedBox(
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: primary,
+                                              foregroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              elevation: 0,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (context) => BuyItemView(
+                                                        shopItem:
+                                                            vm.items[index],
+                                                      ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text(
+                                              'Купить',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              // Name
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
-                                child: Text(
-                                  item.item.name,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    height: 1.2,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              // CTA
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 2),
-                                child: SizedBox(
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: primary,
-                                      foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      elevation: 0,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> BuyItemView(shopItem: vm.items[index])));
-                                    },
-                                    child: const Text(
-                                      'Купить',
-                                      style: TextStyle(fontWeight: FontWeight.w700),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                                );
+                              },
+                            ),
                   ),
                 ],
               ),
@@ -244,8 +295,16 @@ class _PricePill extends StatelessWidget {
     return DecoratedBox(
       decoration: ShapeDecoration(
         color: color.withOpacity(0.95),
-        shape: StadiumBorder(side: BorderSide(color: Colors.white.withOpacity(0.35))),
-        shadows: [BoxShadow(color: color.withOpacity(0.35), blurRadius: 10, offset: const Offset(0, 4))],
+        shape: StadiumBorder(
+          side: BorderSide(color: Colors.white.withOpacity(0.35)),
+        ),
+        shadows: [
+          BoxShadow(
+            color: color.withOpacity(0.35),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -355,9 +414,12 @@ class _ShimmerBox extends StatefulWidget {
   State<_ShimmerBox> createState() => _ShimmerBoxState();
 }
 
-class _ShimmerBoxState extends State<_ShimmerBox> with SingleTickerProviderStateMixin {
-  late final AnimationController _c =
-  AnimationController(vsync: this, duration: const Duration(milliseconds: 1200))..repeat();
+class _ShimmerBoxState extends State<_ShimmerBox>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1200),
+  )..repeat();
   late final Animation<double> _a = Tween(begin: -1.0, end: 2.0).animate(_c);
 
   @override
@@ -383,7 +445,11 @@ class _ShimmerBoxState extends State<_ShimmerBox> with SingleTickerProviderState
                 Colors.white.withOpacity(0.14),
                 Colors.white.withOpacity(0.06),
               ],
-              stops: [(_a.value - 0.3).clamp(0.0, 1.0), _a.value.clamp(0.0, 1.0), (_a.value + 0.3).clamp(0.0, 1.0)],
+              stops: [
+                (_a.value - 0.3).clamp(0.0, 1.0),
+                _a.value.clamp(0.0, 1.0),
+                (_a.value + 0.3).clamp(0.0, 1.0),
+              ],
             ),
           ),
         );
