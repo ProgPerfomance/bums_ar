@@ -1,3 +1,4 @@
+import 'package:bums_ar/core/services/app_money_notificaions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../data/repository/shop_repository.dart';
@@ -33,7 +34,9 @@ class BuyItemViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> buyItem (String shopId, String shopItemId) async {
+  Future<void> buyItem (String shopId, String shopItemId, int itemPrice) async {
+
+    DeltaOverlay.instance.money(-itemPrice);
 
     await _shopRepository.buyItemInShop(shopItemId, buyCount, _userRepository.activeUser.id, shopId);
     buyCount = 0;

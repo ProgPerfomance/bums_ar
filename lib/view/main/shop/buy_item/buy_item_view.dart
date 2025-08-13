@@ -79,7 +79,7 @@ class BuyItemView extends StatelessWidget {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    vm.buyItem(shopItem.shopId, shopItem.id);
+                    vm.buyItem(shopItem.shopId, shopItem.id, shopItem.basePrice);
                     Navigator.pop(context);
                   },
                   child: Container(

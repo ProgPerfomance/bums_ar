@@ -11,7 +11,35 @@ class MainButtons extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> InventoryView()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> InventoryView(
+              menuBuilder: (item, index) => [
+                InventoryMenuAction(
+                  text: 'Использовать',
+                  icon: Icons.play_arrow,
+                  enabled: true,
+                  onTap: () {
+                    // логика использования предмета
+                  },
+                ),
+                InventoryMenuAction(
+                  text: 'Продать',
+                  icon: Icons.attach_money,
+                  enabled: true,
+                  onTap: () {
+                    // логика продажи
+                  },
+                ),
+                InventoryMenuAction(
+                  text: 'Выбросить',
+                  icon: Icons.delete_outline,
+                  enabled: item.item.rarity != 'legendary', // пример условия
+                  onTap: () {
+                    // логика удаления
+                  },
+                ),
+              ],
+            )
+            ));
           },
           child: Container(
             height: 54,

@@ -1,3 +1,4 @@
+import 'package:bums_ar/core/services/app_money_notificaions.dart';
 import 'package:bums_ar/data/repository/shop_repository.dart';
 import 'package:bums_ar/data/repository/user_repository.dart';
 import 'package:bums_ar/service_locator.dart';
@@ -38,6 +39,7 @@ class SellAlertWidgetModel extends ChangeNotifier {
   }
 
   Future<void> sellItems(String itemId, String shopId, int itemPrice) async {
+    DeltaOverlay.instance.money(itemPrice * sellCount);
     await _shopRepository.sellItemInShop(
       itemId,
       sellCount,

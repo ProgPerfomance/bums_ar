@@ -34,7 +34,7 @@ class DeltaOverlay {
     Color? color,
     Duration duration = const Duration(milliseconds: 1400),
     double left = 16,
-    double bottom = 120,
+    double bottom = 720,
   }) async {
     final overlay = _navigatorKey.currentState?.overlay;
     if (overlay == null) return;
@@ -146,7 +146,7 @@ class _DeltaToastState extends State<_DeltaToast>
                   widget.text,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 class RemoteService {
+  //static Dio dio = Dio(BaseOptions(baseUrl: "http://5.187.7.135:5010"));
   static Dio dio = Dio(BaseOptions(baseUrl: "http://localhost:5010"));
 
   static Future<Response> getMapItems(double lat, double long) async {
@@ -95,6 +96,12 @@ class RemoteService {
       "email": email,
       "password": password,
     });
+    return response;
+  }
+
+  static Future<Response> getMapNpc (String userId, double lat, double long) async {
+
+    final response = await dio.post('/map/npc', data: {"user_id": userId, "lat": lat, "long": long,});
     return response;
   }
 
