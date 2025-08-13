@@ -1,5 +1,7 @@
-import 'package:bums_ar/core/colors.dart';
+import 'package:bums_ar/core/images.dart';
 import 'package:bums_ar/view/main/battle/battle_view_model.dart';
+import 'package:bums_ar/view/main/battle/widgets/battle_button.dart';
+import 'package:bums_ar/view/main/battle/widgets/start_battle_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,28 +22,107 @@ class _BattleViewState extends State<BattleView> {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(color: AppColors.mainBlue),
+            decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppImages.battleBg),fit: BoxFit.cover)),
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Stack(
                   children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(height: vm.playerSeat ? 50 : 100, width: 50, color: Colors.green),
-                          SizedBox(width: 24),
-                          Container(height: 50, width: 30, color: Colors.grey),
-                          Spacer(),
-                          Container(height: 50, width: 30, color: Colors.grey),
-                          SizedBox(width: 24),
-                          Container(height: vm.opponentSeat ? 50 : 100, width: 50, color: Colors.green),
-                        ],
-                      ),
+                  Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    height: 150, // высота всей линии
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end, // прижимаем всё к низу
+                      children: [
+                        // Игрок
+                        SizedBox(
+                          height: 150,
+                          width: 90,
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 150,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      vm.playerSeat
+                                          ? AppImages.personSeat
+                                          : AppImages.personStay,
+                                    ),
+                                    fit: BoxFit.fitWidth,
+                                    alignment: Alignment.bottomCenter,
+                                  ),
+                                ),
+                              ),
+                              Positioned(child: Image.asset(AppImages.scarL,fit: BoxFit.contain,width: 90,), left: 8,bottom:   vm.playerSeat? 34 :70,),
+                            ],
+                          ),
+                        ),
+
+                        // Баррикада справа
+                        Container(
+                          height: 70,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(AppImages.barricadeRight),
+                              fit: BoxFit.cover,
+                              alignment: Alignment.bottomCenter,
+                            ),
+                          ),
+                        ),
+
+                        const Spacer(),
+
+                        // Баррикада слева
+                        Container(
+                          height: 70,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(AppImages.barricadeLeft),
+                              fit: BoxFit.cover,
+                              alignment: Alignment.bottomCenter,
+                            ),
+                          ),
+                        ),
+
+                        // Противник
+                        Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.identity()..scale(-1.0, 1.0, 1.0), // отражение по горизонтали
+                          child: SizedBox(
+                            height: 150,
+                            width: 90,
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 150,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        vm.opponentSeat
+                                            ? AppImages.personSeat
+                                            : AppImages.personStay,
+                                      ),
+                                      fit: BoxFit.fitWidth,
+                                      alignment: Alignment.bottomCenter,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(child: Image.asset(AppImages.scarL,fit: BoxFit.contain,width: 90,), left: 8,bottom:   vm.opponentSeat? 34 :70,),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                    Align(
+                  ),
+                ),
+                  Align(
                       alignment: Alignment(0.5, 0.4),
                       child: Row(
                         children: [
@@ -105,7 +186,7 @@ class _BattleViewState extends State<BattleView> {
                       height: 58,
                       width: 58,
                       child: BattleButton(onTap: () {
-                        vm.playerShot();
+                        vm.firePlayer();
                       },),
                     ),
 
@@ -132,104 +213,3 @@ class _BattleViewState extends State<BattleView> {
   }
 }
 
-class BattleButton extends StatelessWidget {
-  final double width;
-  final double height;
-  final VoidCallback onTap;
-  const BattleButton({super.key, this.width = 48, this.height = 48, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Colors.white.withAlpha(80),
-          border: Border.all(color: Colors.white.withAlpha(183)),
-        ),
-      ),
-    );
-  }
-}
-
-
-class StartBattleSheet extends StatelessWidget {
-  const StartBattleSheet({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final vm = Provider.of<BattleViewModel>(context);
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Colors.black.withAlpha(173),
-      ),
-      child: Center(
-        child: Container(
-          height: 300,
-          width: MediaQuery.of(context).size.width - 32,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            color: AppColors.mainBlue,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                SizedBox(height: 48,),
-                Text("Вы хотите начать бой?",style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),),
-                Spacer(),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        height: 48,
-                        width: MediaQuery.of(context).size.width / 2.7,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          color: Colors.white.withAlpha(128),
-                        ),
-                        child: Center(
-                          child: Text("Скрыться", style: TextStyle(color: Colors.white,),),
-                        ),
-                      ),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: (){
-                        vm.startBattleAi();
-                        vm.hideStartBattleWindow();
-                      },
-                      child: Container(
-                        height: 48,
-                        width: MediaQuery.of(context).size.width / 2.7,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          color: Colors.white.withAlpha(128),
-                        ),
-                        child: Center(
-                          child: Text("Начать", style: TextStyle(color: Colors.white,),),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}

@@ -17,12 +17,12 @@ import 'core/services/app_money_notificaions.dart';
 
 
 
-final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
 void main() {
   setupLocator();
   // инициализация сервиса оверлея
-  DeltaOverlay.instance.init(_navKey);
+  DeltaOverlay.instance.init(navKey);
   runApp(const MyApp());
 }
 
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        navigatorKey: _navKey,
+        navigatorKey: navKey,
         home: const Scaffold(body: LoadingView()),
       ),
     );

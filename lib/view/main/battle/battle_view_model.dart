@@ -1,38 +1,71 @@
-import 'package:flutter/material.dart';
-import 'dart:math';
 import 'dart:async';
+import 'dart:math';
+import 'package:bums_ar/main.dart';
+import 'package:bums_ar/view/main/battle/widgets/tracer_bullet.dart';
+import 'package:flutter/material.dart';
+import '../../../data/repository/user_repository.dart';
+import '../../../service_locator.dart';
+import 'battle_view.dart';
+
 
 class BattleViewModel extends ChangeNotifier {
-
+  final UserRepository _userRepository = getIt.get<UserRepository>();
   bool playerSeat = false;
   bool opponentSeat = false;
 
-  int playerHealt  =100;
-  int npcHealt  =100;
+  int get playerHealt => _userRepository.activeUser.stats.heal.toInt();
+  int npcHealt = 100;
 
+  // ======== ВЫСТРЕЛ ЧЕРЕЗ OVERLAY (напрямую из VM) ========
+  void _spawnTracer({required bool fromLeft, required bool miss}) {
+    final overlay = navKey.currentState?.overlay;
+    if (overlay == null) return;
 
-  void changePlayerSeat () {
-    if(winBattleWindow || looseBattleWindow) {
-      return;
-    }
+    late OverlayEntry entry;
+    entry = OverlayEntry(
+      builder: (_) => TracerBullet(
+        miss: miss,
+        fromLeft: fromLeft,
+        onDone: () {
+          entry.remove(); // удалить как долетит
+        },
+      ),
+    );
+
+    overlay.insert(entry);
+  }
+
+  void firePlayer() {
+    if (winBattleWindow || looseBattleWindow || playerSeat) return;
+    bool? miss = playerShot();
+    if(miss == null) return;
+    _spawnTracer(fromLeft: true,miss: !miss);
+  }
+
+  void fireNpc() {
+    if (winBattleWindow || looseBattleWindow || opponentSeat) return;
+    bool? miss = npcShot();
+    if(miss == null) return;
+    _spawnTracer(fromLeft: false,miss: !miss);
+
+  }
+
+  // ======== Остальная логика как у тебя ========
+  void changePlayerSeat() {
+    if (winBattleWindow || looseBattleWindow) return;
     playerSeat = !playerSeat;
     notifyListeners();
   }
 
-
-  void playerUseMedicine () {
-    if(winBattleWindow || looseBattleWindow) {
-      return;
-    }
-    playerHealt +=30;
+  void playerUseMedicine() {
+    if (winBattleWindow || looseBattleWindow) return;
+    _userRepository.healUser(30);
     notifyListeners();
   }
 
-  void npcUseMedicine () {
-    if(winBattleWindow || looseBattleWindow) {
-      return;
-    }
-    npcHealt +=30;
+  void npcUseMedicine() {
+    if (winBattleWindow || looseBattleWindow) return;
+    npcHealt += 30;
     notifyListeners();
   }
 
@@ -40,122 +73,62 @@ class BattleViewModel extends ChangeNotifier {
   bool winBattleWindow = false;
   bool looseBattleWindow = false;
 
-  void showStartBattleWindow () {
-    startBattleWindow = true;
-    notifyListeners();
-  }
+  void showStartBattleWindow() { startBattleWindow = true; notifyListeners(); }
+  void hideStartBattleWindow() { startBattleWindow = false; notifyListeners(); }
+  void showWinBattleWindow() { winBattleWindow = true; notifyListeners(); }
+  void hideWinBattleWindow() { winBattleWindow = false; notifyListeners(); }
+  void showLooseBattleWindow() { looseBattleWindow = true; notifyListeners(); }
+  void hideLooseBattleWindow() { looseBattleWindow = false; notifyListeners(); }
 
-  void hideStartBattleWindow () {
-    startBattleWindow = false;
-    notifyListeners();
-  }
+  void winBattle() { showWinBattleWindow(); }
+  void looseBattle() { showLooseBattleWindow(); }
 
-  void showWinBattleWindow () {
-    winBattleWindow = true;
-    notifyListeners();
-  }
-
-  void hideWinBattleWindow () {
-    winBattleWindow = false;
-    notifyListeners();
-  }
-
-  void showLooseBattleWindow () {
-    looseBattleWindow = true;
-    notifyListeners();
-  }
-
-  void hideLooseBattleWindow () {
-    looseBattleWindow = false;
-    notifyListeners();
-  }
-
-
-  void winBattle () {
-    showWinBattleWindow();
-    print("победа");
-  }
-  void looseBattle () {
-    showLooseBattleWindow();
-    print("проигрыш");
-  }
-
-  void stopBattle () {
-    timer?.cancel();
-    notifyListeners();
-  }
   Timer? timer;
-  void startBattleAi () {
-     timer =Timer.periodic(Duration(seconds: 1), (t) {
-      if(opponentSeat == false) {
-        npcShot();
+  void stopBattle() { timer?.cancel(); notifyListeners(); }
+
+  void startBattleAi() {
+    timer = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!opponentSeat) {
+        fireNpc(); // трассер + логика
       }
-      if(npcHealt <= 0) {
-        winBattle();
-        timer?.cancel();
+      if (npcHealt <= 0) {
+        winBattle(); timer?.cancel();
       }
-      if(playerHealt <= 0) {
-        looseBattle();
-        print(playerHealt);
-        timer?.cancel();
+      if (playerHealt <= 0) {
+        looseBattle(); timer?.cancel();
       }
-      if(npcHealt < 40) {
+      if (npcHealt < 40) {
         npcUseMedicine();
       }
     });
   }
 
-  void npcShot() {
-    if(winBattleWindow || looseBattleWindow) {
-      return;
-    }
-    double chance = 0.3; // вероятность попадания (30%)
-    int damage = 30;  // урон при попадании
-
-    Random random = Random();
-    double roll = random.nextDouble();
-    if(playerSeat) {
-      print("игрок за укрытием");
-      return;
-    }
-    if (roll <= chance) {
-      print("Противник Попал! Нанёс $damage урона.");
-      playerHealt -= damage;
-      if(playerHealt < 0) {
-        playerHealt = 0;
-      }
-    } else {
-      print("Противник: Промах!");
+  bool? npcShot() {
+    if (winBattleWindow || looseBattleWindow) return null;
+    const chance = 0.3;
+    const damage = 0;
+    final r = Random();
+    bool addDamage = r.nextDouble() <= chance;
+    if (playerSeat) return null;
+    if (addDamage) {
+      _userRepository.damageUser(damage);
     }
     notifyListeners();
+    return addDamage;
   }
 
-
-
-  void playerShot() {
-    if(winBattleWindow || looseBattleWindow) {
-      return;
-    }
-    double chance = 0.3; // вероятность попадания (30%)
-    int damage = 30;  // урон при попадании
-
-    Random random = Random();
-    double roll = random.nextDouble();
-    if(opponentSeat) {
-      print("противник за укрытием");
-      return;
-    }
-    if (roll <= chance) {
-      print("Попал! Нанёс $damage урона.");
+  bool? playerShot() {
+    if (winBattleWindow || looseBattleWindow) return null;
+    const chance = 0.3;
+    const damage = 30;
+    final r = Random();
+    bool addDamage = r.nextDouble() <= chance;
+    if (opponentSeat) return null;
+    if (addDamage) {
       npcHealt -= damage;
-      if(npcHealt < 0) {
-        npcHealt = 0;
-      }
-    } else {
-      print("Промах!");
+      if (npcHealt < 0) npcHealt = 0;
     }
     notifyListeners();
+    return addDamage;
   }
-
-
 }
