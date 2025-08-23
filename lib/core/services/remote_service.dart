@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 
 class RemoteService {
-  //static Dio dio = Dio(BaseOptions(baseUrl: "http://5.187.7.135:5010"));
-  static Dio dio = Dio(BaseOptions(baseUrl: "http://localhost:5010"));
+  static Dio dio = Dio(BaseOptions(baseUrl: "http://5.187.7.135:5010"));
+  // static Dio dio = Dio(BaseOptions(baseUrl: "http://localhost:5010"));
 
   static Future<Response> getMapItems(double lat, double long) async {
     final response = await dio.post(
@@ -69,56 +69,73 @@ class RemoteService {
     String itemId,
     int itemCount,
     String shopId,
-      int itemPrice,
-      String userId,
+    int itemPrice,
+    String userId,
   ) async {
     final response = await dio.post(
       "/shops/item/sell",
-      data: {"item_id": itemId, "item_count": itemCount, "shop_id": shopId, "user_id": userId, "item_price": itemPrice},
+      data: {
+        "item_id": itemId,
+        "item_count": itemCount,
+        "shop_id": shopId,
+        "user_id": userId,
+        "item_price": itemPrice,
+      },
     );
     return response;
   }
 
-  static Future<Response> buyItemsInShop (int itemCount, String userId, String shopItemId, String shopId) async {
-    final response = await dio.post("/shops/item/buy", data: {
-      "item_count": itemCount,
-      "shop_id": shopId,
-      "user_id": userId,
-      "shop_item_id": shopItemId,
-    });
+  static Future<Response> buyItemsInShop(
+    int itemCount,
+    String userId,
+    String shopItemId,
+    String shopId,
+  ) async {
+    final response = await dio.post(
+      "/shops/item/buy",
+      data: {
+        "item_count": itemCount,
+        "shop_id": shopId,
+        "user_id": userId,
+        "shop_item_id": shopItemId,
+      },
+    );
     return response;
   }
-
 
   static Future<Response> loginUser(String email, String password) async {
-
-    final response = await dio.post("/users/login",data: {
-      "email": email,
-      "password": password,
-    });
+    final response = await dio.post(
+      "/users/login",
+      data: {"email": email, "password": password},
+    );
     return response;
   }
 
-  static Future<Response> getMapNpc (String userId, double lat, double long) async {
-
-    final response = await dio.post('/map/npc', data: {"user_id": userId, "lat": lat, "long": long,});
+  static Future<Response> getMapNpc(
+    String userId,
+    double lat,
+    double long,
+  ) async {
+    final response = await dio.post(
+      '/map/npc',
+      data: {"user_id": userId, "lat": lat, "long": long},
+    );
     return response;
   }
 
-  static Future<Response> healUser (String userId, int heal) async {
-    final response = await dio.put("/users/heal", data: {
-      "user_id": userId,
-      "heal": heal,
-    });
+  static Future<Response> healUser(String userId, int heal) async {
+    final response = await dio.put(
+      "/users/heal",
+      data: {"user_id": userId, "heal": heal},
+    );
     return response;
   }
 
-  static Future<Response> damageUser (String userId, int heal) async {
-    final response = await dio.put("/users/damage", data: {
-      "user_id": userId,
-      "damage": heal,
-    });
+  static Future<Response> damageUser(String userId, int heal) async {
+    final response = await dio.put(
+      "/users/damage",
+      data: {"user_id": userId, "damage": heal},
+    );
     return response;
   }
-
 }

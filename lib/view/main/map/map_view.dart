@@ -74,9 +74,7 @@ class _MapViewState extends State<MapView> {
         final latLng = LatLng(pos.latitude, pos.longitude);
 
         vm.updateUserPosition(latLng);
-
-      } catch (e) {
-      }
+      } catch (e) {}
     });
   }
 
@@ -94,7 +92,7 @@ class _MapViewState extends State<MapView> {
             height: 38,
             point: LatLng(coords.latitude, coords.longitude),
             child: GestureDetector(
-              onTap: () async{
+              onTap: () async {
                 print("pick");
                 await vm.pickItem(loc.id);
               },
@@ -115,34 +113,38 @@ class _MapViewState extends State<MapView> {
         }).toList();
 
     final shops =
-    vm.shops.map((loc) {
-      final coords = loc.position;
-      final canPick = vm.canPickup(loc.id);
+        vm.shops.map((loc) {
+          final coords = loc.position;
+          final canPick = vm.canPickup(loc.id);
 
-      return Marker(
-        width: 38,
-        height: 38,
-        point: LatLng(coords.latitude, coords.longitude),
-        child: ShopMarker(canPick: false, shop: loc,),
-      );
-    }).toList();
+          return Marker(
+            width: 38,
+            height: 38,
+            point: LatLng(coords.latitude, coords.longitude),
+            child: ShopMarker(canPick: false, shop: loc),
+          );
+        }).toList();
 
     final npc =
-    vm.npc.map((loc) {
-      final coords = loc;
-     // final canPick = vm.canPickup(loc.id);
+        vm.npc.map((loc) {
+          final coords = loc;
+          // final canPick = vm.canPickup(loc.id);
 
-      return Marker(
-        width: 38,
-        height: 38,
-        point: LatLng(coords.position.latitude, coords.position.longitude),
-        child: GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> BattleView()));
-          },
-            child: Icon(Icons.password)),
-      );
-    }).toList();
+          return Marker(
+            width: 38,
+            height: 38,
+            point: LatLng(coords.position.latitude, coords.position.longitude),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BattleView()),
+                );
+              },
+              child: Icon(Icons.password),
+            ),
+          );
+        }).toList();
 
     return Scaffold(
       body: Stack(
@@ -155,19 +157,22 @@ class _MapViewState extends State<MapView> {
               options: MapOptions(
                 onMapReady: () async {
                   _centerOnUser();
-                 await vm.getMarkers();
+                  await vm.getMarkers();
                 },
                 initialCenter: vm.userPosition,
                 initialZoom: 15,
               ),
               children: [
                 TileLayer(
-                  urlTemplate: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+                  urlTemplate:
+                      'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
                   userAgentPackageName: 'com.example.app',
                 ),
                 MarkerLayer(
                   markers: [
-                    ...markers, ...shops, ...npc,
+                    ...markers,
+                    ...shops,
+                    ...npc,
                     Marker(
                       point: vm.userPosition,
                       child: const Icon(Icons.person),
@@ -180,7 +185,7 @@ class _MapViewState extends State<MapView> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(top: 18.0, left: 18),
-              child: OverlayWidget(stats: vm.user.stats,rub: vm.user.rub,),
+              child: OverlayWidget(stats: vm.user.stats, rub: vm.user.rub),
             ),
           ),
           Positioned(
@@ -212,13 +217,19 @@ class ShopMarker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async{
-        if(shop.type == "trash_sell") {
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => BottleShopView(shop: shop,)));
-        }
-        else if (shop.type == "base_shop") {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> ConvenienceStoreView(shop: shop)));
+      onTap: () async {
+        if (shop.type == "trash_sell") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BottleShopView(shop: shop)),
+          );
+        } else if (shop.type == "base_shop") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConvenienceStoreView(shop: shop),
+            ),
+          );
         }
       },
       child: Container(
@@ -236,7 +247,3 @@ class ShopMarker extends StatelessWidget {
     );
   }
 }
-
-
-
-

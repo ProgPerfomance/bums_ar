@@ -1,6 +1,5 @@
 import 'package:bums_ar/core/services/remote_service.dart';
 import 'package:bums_ar/domain/entities/user_entity.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
